@@ -28,7 +28,8 @@ def main():
         system_message,
         # HumanMessage(content="How many files are in the current directory?")
         # HumanMessage(content="How many megabytesare in the current directory?")
-        HumanMessage(content="Show me all files in the current directory as a list")
+        # HumanMessage(content="Show me all files in the current directory as a list")
+        HumanMessage(content="CPU is overloaded. We need find the problem.")
         # HumanMessage(content="Show me all files and folders (venv excluded) in the current directory as a tree")
         # HumanMessage(content="Show me free disk space")
     ]
@@ -47,7 +48,7 @@ def main():
         if response.startswith("TOOL"):
             request_id, shell_command = response.split(" ", 1)
             print("\n--- Running Command ---------------")
-            os.system(f"{shell_command}")
+            # os.system(f"{shell_command}")
             shell_output = f'{request_id}:\n{os.popen(f"{shell_command}").read().strip()}'
             session.append(ChatMessage(role="tool", content=shell_output))
         else:

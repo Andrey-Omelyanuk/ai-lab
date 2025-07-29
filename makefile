@@ -1,9 +1,16 @@
 
+help:
+	echo "install"
+	echo "activate"
+	echo "update"
+	echo "run"
+	echo "up"
+
 install:
 	python3 -m venv .venv
 
 activate:
-	source .venv/bin/activate
+	. .venv/bin/activate
 
 update:
 	pip install -r requirements.txt
@@ -11,6 +18,8 @@ update:
 run:
 	python ollama_chat.py
 
+test:
+	python test.py
 
 up:
 	docker compose up
