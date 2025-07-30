@@ -1,0 +1,48 @@
+[project]
+name = "ai-lab-backend"
+version = "0.0.1"
+description = "AI Lab - Backend Service"
+readme = "README.md"
+requires-python = ">=3.12, <4"
+dependencies = [
+    "uuid7            >= 0.1.0"     , # This module implements the version 7 UUIDs
+    "celery[redis]    >= 5.4.0"     , # Distributed Task Queue.
+    "psycopg[binary]  >= 3.2.4"     , # PostgreSQL database adapter for Python.
+    "granian          >= 1.7.4"     , # Granian is a Rust HTTP server for Python applications built on top of Hyper and Tokio.
+    "whitenoise       >= 6.8.2"     , # Radically simplified static file serving for Python web apps
+    "langchain           >= 0.3.25" , # LangChain is a framework for building applications powered by language models.
+    "langchain-community >= 0.3.24" , # LangChain Community is a collection of community-maintained modules for LangChain.
+    "langchain-core      >= 0.3.60" , # LangChain Core is the core library for LangChain.
+    "langchain-ollama    >= 0.3.3"  , # LangChain Ollama is a library for using Ollama with LangChain.
+    "django                 >= 5.1.4"   , # Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design.
+    "django-environ         >= 0.11.2"  , # Django-environ is a library that allows you to use environment variables in your Django settings.
+    "django-celery-results  >= 2.5.1"   , # This extension enables you to store Celery task results using the Django ORM.
+    "django-celery-beat     >= 2.7.0"   , # Database-backed Periodic Tasks.
+]
+
+[dependency-groups]
+dev = [
+    "django-debug-toolbar   >= 4.4.6"  , # Django Debug Toolbar is a configurable set of panels that display various debug information about the current request/response.
+    "granian[reload]        >= 1.7.4"  , # Granian is a Rust HTTP server for Python applications built on top of Hyper and Tokio.
+    "ruff                   >= 0.9.1"  , # Ruff is a fast, opinionated, and configurable Python linter.
+    "flower                 >= 2.0.1"  , # Flower is a web based tool for monitoring and administrating Celery clusters.
+    "sqlparse               >= 0.5.3"  , # A non-validating SQL parser module for Python.
+    "pygments               >= 2.18.0" , # Pygments is a syntax highlighting package written in Python.
+]
+test = [
+    "pytest-django          >= 4.9.0"  , # Pytest-django is a plugin for pytest that provides a Django test runner and a Django database backend.
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+
+[tool.ruff]
+include = ["**.py"]
+extend-exclude = ["migrations", "static"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D100", "D101", "D103", "D104", "D203", "D212", "COM812"]
+
+[tool.ruff.lint.per-file-ignores]
+"*/tests/**.py" = ["S101"]

@@ -1,3 +1,10 @@
+PROJECT_NAME=ai-lab
+# try to import env from .makefile.env
+ifneq (,$(wildcard .env))
+	include .env
+	export $(shell sed 's/=.*//' .env)
+endif
+DOCKER_COMPOSE_FILE?=compose.yml
 
 help:
 	echo "install"
@@ -5,6 +12,19 @@ help:
 	echo "update"
 	echo "run"
 	echo "up"
+
+init:
+	echo $(DOCKER_COMPOSE_FILE)
+	if [ ! -f "./.env"                   ]; then cp ./utils/.env.example               ./.env; fi
+	if [ ! -f "./utils/nginx.conf"       ]; then cp ./utils/nginx.conf.example         ./utils/nginx.conf; fi
+
+build:
+	export DOCKER_BUILDKIT=1 && \
+	export COMPOSE_BAKE=true && \
+	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) build
+
+run:
+	docker compose up
 
 install:
 	python3 -m venv .venv
@@ -15,11 +35,9 @@ activate:
 update:
 	pip install -r requirements.txt
 
-run:
-	python ollama_chat.py
-
 test:
 	python test.py
 
-up:
-	docker compose up
+
+migrate:
+	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec main python manage.py migrate

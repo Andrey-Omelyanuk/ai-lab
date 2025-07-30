@@ -1,3 +1,8 @@
-venv/
 .env
 .venv
+.idea
+.ropeproject
+.nvimlog
+*.swp
+*.bkp
+/utils/nginx.conf

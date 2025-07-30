@@ -18,19 +18,20 @@ llm = OllamaLLM(
 # system_message = SystemMessage(content="""
 #     Think as quick as possible. Don't check twice yourself. Don't repeat youself.
 # """)
-system_message = SystemMessage(content="""
-    /no_think
-""")
+# system_message = SystemMessage(content="""
+#     /no_think
+# """)
+system_message = SystemMessage(content="")
 
 
 def main():
     """ Test LLM. """
 
     start_a = 1
-    start_b = 34
-    lost_user = 29
-    found_user = 33
-    last_user = 77
+    start_b = 35 
+    lost_user = 27 
+    found_user = 33 
+    last_user = 77 
 
     message = f'User {start_a} and {start_b} found apples. Each by one. \n'
 
@@ -48,8 +49,10 @@ def main():
     session = [system_message, HumanMessage(content=message)]
     print(f"\n--- Message tokens: ({llm.get_num_tokens_from_messages(session)}) ---------------")
     response = llm.invoke(session, stream=True)
-    response = [HumanMessage(content=response)]
-    print(f"\n--- Response tokens: ({llm.get_num_tokens_from_messages(response)}) ---------------")
+    session += [HumanMessage(content=response)]
+    print(f"\n--- Response tokens: ({llm.get_num_tokens_from_messages(session)}) ---------------")
+    session += [HumanMessage(content=f'Return only one word "True" if User {found_user} and User {last_user} have apples and "False" if not.')]
+    response = llm.invoke(session, stream=True)
 
 if __name__ == "__main__":
     main()
