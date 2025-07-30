@@ -1,7 +1,6 @@
 x-main:
   &main
   build: { context: ./main, target: dev }
-  image: main:dev
   stdin_open: true
   tty       : true
   volumes:

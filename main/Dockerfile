@@ -1,4 +1,5 @@
-FROM ghcr.io/astral-sh/uv:python3.12-alpine AS base
+# FROM ghcr.io/astral-sh/uv:python3.12-alpine AS base
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS base
 
 ARG RELEASE_VERSION
 ENV RELEASE_VERSION=$RELEASE_VERSION
@@ -7,15 +8,15 @@ LABEL version="${RELEASE_VERSION}"
 LABEL description="AI Lab - Backend Service"
 
 # Install root dependencies
-# RUN --mount=type=cache,target=/var/cache/apk \
-#     apk update && apk upgrade && \
-#     apk add --no-cache curl gcc ffmpeg
+# RUN --mount=type=cache,target=/var/cache/apt \
+#     apt-get update && apt-get upgrade -y && \
+#     apt-get install -y --no-install-recommends curl gcc
 
 # Create user and group for the application
 ARG UID=1000
 ARG GID=1000
-RUN addgroup -g $GID -S app \
- && adduser  -u $UID -S app -G app
+RUN groupadd -g $GID app \
+ && useradd -u $UID -g app -m -s /bin/bash app
 USER app
 
 # Enable bytecode compilation
@@ -31,7 +32,7 @@ FROM base AS dev
 WORKDIR /home/app
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --no-install-project --group dev --group test
+    uv sync --group dev --group test
 
 WORKDIR /home/app/src
 ENV PYTHONDONTWRITEBYTECODE=1

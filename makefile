@@ -38,6 +38,8 @@ update:
 test:
 	python test.py
 
+makemigrations:
+	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec back-main python manage.py makemigrations
 
 migrate:
 	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec main python manage.py migrate
