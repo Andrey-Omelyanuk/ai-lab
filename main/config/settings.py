@@ -26,6 +26,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     # external apps
+    'corsheaders',
+    'django_celery_results',
+    'django_celery_beat',
+    'django_extensions',
     # internal apps
     'apps.core',
     'apps.llm_test',
@@ -72,6 +76,13 @@ DATABASES = {
         'PASSWORD'  : env.str('DB_PASSWORD'),
     }
 }
+
+# -- Celery settings ----------------------------------------------------------
+CELERY_BROKER_URL           = env.str('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND       = 'django-db'
+CELERY_RESULT_EXTENDED      = True
+CELERY_TASK_TRACK_STARTED   = True
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # collectstatic will put files here

@@ -39,7 +39,12 @@ test:
 	python test.py
 
 makemigrations:
-	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec back-main python manage.py makemigrations
-
+	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec main python manage.py makemigrations
 migrate:
 	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec main python manage.py migrate
+test_data_dump:
+	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec main sh utils/test_data_dump.sh
+test_data_reset:
+	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec main sh utils/test_data_reset.sh
+create_superuser:
+	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec main python manage.py createsuperuser

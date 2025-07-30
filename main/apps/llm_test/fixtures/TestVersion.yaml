@@ -1,0 +1,7 @@
+- model: llm_test.testversion
+  pk: 1
+  fields:
+    test: 1
+    number: 1
+    prompt: Say "Abracadabra".
+    check_prompt: Return only one word "True" if previous response contain "Abracadabra".

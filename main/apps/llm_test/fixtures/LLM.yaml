@@ -1,0 +1,6 @@
+- model: llm_test.llm
+  pk: 1
+  fields:
+    name: Qwen 2.5 Coder
+    slug: qwen2.5-coder
+    desc: ''

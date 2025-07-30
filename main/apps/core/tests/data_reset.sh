@@ -1,0 +1,1 @@
+python manage.py loaddata --app=core User Site

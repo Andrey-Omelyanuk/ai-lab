@@ -3,6 +3,9 @@ x-main:
   build: { context: ./main, target: dev }
   stdin_open: true
   tty       : true
+  depends_on:
+    - db
+    - redis
   volumes:
     - ./main:/home/app/src
   environment:
@@ -29,15 +32,16 @@ volumes:
 services:
   main:
     <<: *main
-    ports:
-      - 8000:8000
-    command: ["granian", "--interface", "asginl", "config.asgi:application", "--host", "0.0.0.0", "--port", "8000", "--reload"]
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval    : 60s
-      timeout     : 5s
-      start_period: 5s
-      retries     : 3
+    command: granian --interface asginl config.asgi:application --host 0.0.0.0 --port 8000 --reload
+  worker:
+    <<: *main
+    command: celery -A config worker -l info
+  beat:
+    <<: *main
+    command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+  flower:
+    <<: *main
+    command: celery -A config flower --port=8888
   # ----------------------------------------------
   db:
     image: postgres:17.5-alpine3.21
@@ -71,6 +75,7 @@ services:
       - 80:80
     depends_on:
       - main
+      - flower
     environment:
       DOMAIN: ${DOMAIN:-dev.localhost}
       NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx

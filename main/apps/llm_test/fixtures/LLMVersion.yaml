@@ -1,0 +1,6 @@
+- model: llm_test.llmversion
+  pk: 1
+  fields:
+    model: 1
+    name: 7b
+    desc: ''
