@@ -1,6 +1,7 @@
 from langchain_ollama import OllamaLLM
 from langchain.schema import HumanMessage, SystemMessage
 from .models import Run, RunAttempt, RunAttemptLog, RunStatus
+from .utils import get_full_log
 
 
 def run_llm_test(run_id: int):
@@ -24,11 +25,14 @@ def run_llm_test(run_id: int):
             messages.append(HumanMessage(content=rule.prompt))
         messages.append(HumanMessage(content=run.test_version.prompt))
 
+
         for _ in range(run.count):
             attempt = RunAttempt.objects.create(run=run)
             # First step: run the test
             response = llm.invoke(messages)
-            RunAttemptLog.objects.create(attempt=attempt, response=response)
+
+            log = get_full_log(messages, response)
+            RunAttemptLog.objects.create(attempt=attempt, response=log)
             # Second step: check the answer
             # get the last 3 lines of the response as a final answer
             final_answer = "\n".join(response.split("\n")[-3:]).strip()
@@ -37,7 +41,8 @@ def run_llm_test(run_id: int):
                 HumanMessage(content=run.test_version.check_prompt),
             ]
             response = llm.invoke(second_step_messages)
-            RunAttemptLog.objects.create(attempt=attempt, response=response)
+            log = get_full_log(second_step_messages, response)
+            RunAttemptLog.objects.create(attempt=attempt, response=log)
             attempt.status = RunStatus.COMPLETED if response.endswith("True") else RunStatus.FAILED
             attempt.save()
             run.status = attempt.status  # last attempt status is the run status
