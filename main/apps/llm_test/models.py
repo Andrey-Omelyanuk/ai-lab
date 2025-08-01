@@ -20,7 +20,6 @@ __all__ = [
     'RunRule',
     'RunAttempt',
     'RunAttemptLog',
-    'RunLog',
     'Tag',
     'TestTag'
 ]
@@ -41,8 +40,8 @@ class Provider(Model):
 class LLM(Model):
     """ LLM Model """
     name = CharField(max_length=64, null=False)
-    slug = CharField(max_length=64, null=False)
     desc = TextField(null=True, blank=True)
+    slug = CharField(max_length=64, null=False)
 
     history = HistoricalRecords()
 
@@ -130,6 +129,25 @@ class TestVersion(Model):
         return f"{self.test} :: {self.name}"
 
 
+class Tag(Model):
+    """ Tag """
+    name = CharField(max_length=64, null=False)
+    desc = TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class TestTag(Model):
+    """ Test Tag """
+    test  = ForeignKey(Test, on_delete=CASCADE, related_name='tags')
+    tag   = ForeignKey(Tag, on_delete=CASCADE, related_name='tests')
+    value = IntegerField(null=False, default=0)
+
+    def __str__(self):
+        return f"{self.test} :: {self.tag} :: {self.value}"
+
+
 class RunStatus(IntegerChoices):
     """ Run status """
     PENDING   = 0, _('Pending' )
@@ -156,8 +174,6 @@ class Run(Model):
         help_text='The cumulative probability cutoff for token selection.')
     top_k        = PositiveSmallIntegerField( null=False, default=5,
         help_text='Sample from the k most likely next tokens at each step.')
-    manual_check = BooleanField(null=False, default=False,
-        help_text='Manual check of the response.')
 
     def __str__(self):
         return f"{self.timestamp} :: {self.llm_version} :: {self.test_version}"
@@ -184,6 +200,8 @@ class RunAttempt(Model):
     run         = ForeignKey(Run, on_delete=CASCADE, related_name='attempts')
     timestamp   = DateTimeField(auto_now_add=True)
     status      = IntegerField(null=False, default=RunStatus.PENDING)
+    manual_check = BooleanField(null=False, default=False,
+        help_text='Manual check of the response.')
 
     def __str__(self):
         return f"{self.timestamp} :: {self.run_id}"
@@ -198,31 +216,3 @@ class RunAttemptLog(Model):
     def __str__(self):
         return f"{self.timestamp} :: {self.attempt_id}"
 
-
-class RunLog(Model):
-    """ LLM Test Run Log """
-    run         = ForeignKey(Run, on_delete=CASCADE, related_name='logs')
-    timestamp   = DateTimeField(auto_now_add=True)
-    response    = TextField(null=False)
-
-    def __str__(self):
-        return f"{self.timestamp} :: {self.run_id}"
-
-
-class Tag(Model):
-    """ Tag """
-    name = CharField(max_length=64, null=False)
-    desc = TextField(null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.name}"
-
-
-class TestTag(Model):
-    """ Test Tag """
-    test  = ForeignKey(Test, on_delete=CASCADE, related_name='tags')
-    tag   = ForeignKey(Tag, on_delete=CASCADE, related_name='tests')
-    value = IntegerField(null=False, default=0)
-
-    def __str__(self):
-        return f"{self.test} :: {self.tag} :: {self.value}"

@@ -1,6 +1,6 @@
 from langchain_ollama import OllamaLLM
 from langchain.schema import HumanMessage
-from .models import Run, RunLog, RunStatus
+from .models import Run, RunAttempt, RunAttemptLog, RunStatus
 
 
 def run_llm_test(run_id: int):
@@ -19,16 +19,16 @@ def run_llm_test(run_id: int):
 
         messages = []
         # First step
-        messages.append(HumanMessage(content=run.test_version.prompt))
-        response = llm.invoke(messages)
-        RunLog.objects.create(run=run, response=response)
-        # Second step
-        messages.append(HumanMessage(content=run.test_version.check_prompt))
-        response = llm.invoke(messages)
-        RunLog.objects.create(run=run, response=response)
+        # messages.append(HumanMessage(content=run.test_version.prompt))
+        # response = llm.invoke(messages)
+        # RunLog.objects.create(run=run, response=response)
+        # # Second step
+        # messages.append(HumanMessage(content=run.test_version.check_prompt))
+        # response = llm.invoke(messages)
+        # RunLog.objects.create(run=run, response=response)
         # Check result
-        run.status = RunStatus.COMPLETED if response.endswith("True") else RunStatus.FAILED
-        run.save()
+        # run.status = RunStatus.COMPLETED if response.endswith("True") else RunStatus.FAILED
+        # run.save()
 
     except Exception as e:
         run.status = RunStatus.ERROR
