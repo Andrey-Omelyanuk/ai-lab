@@ -2,6 +2,6 @@
   pk: 1
   fields:
     test: 1
-    number: 1
-    prompt: Say "Abracadabra".
+    name: '1'
+    prompt: "Say \"Abracadabra\".\r\nFinal answer should be after tag <answer>."
     check_prompt: Return only one word "True" if previous response contain "Abracadabra".

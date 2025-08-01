@@ -1,1 +1,1 @@
-python manage.py loaddata --app=llm_test Provider LLM LLMVersion Test TestVersion
+python manage.py loaddata --app=llm_test Provider LLM LLMVersion TestGroup Test TestVersion Tag TestTag

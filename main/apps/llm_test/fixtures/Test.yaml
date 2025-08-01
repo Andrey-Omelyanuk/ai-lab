@@ -1,5 +1,7 @@
 - model: llm_test.test
   pk: 1
   fields:
+    group: null
     name: First Test
     desc: Just to make sure everything works.
+    order: 0

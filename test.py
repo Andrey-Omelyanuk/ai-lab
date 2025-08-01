@@ -1,18 +1,14 @@
 """Script for interacting with Ollama LLM models using LangChain."""
 
-import os
 from langchain_ollama import OllamaLLM
-from langchain.callbacks.manager import CallbackManager
-from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain.schema import SystemMessage, HumanMessage, ChatMessage
+from langchain.schema import SystemMessage
 
 # Configure Ollama with your custom host
 llm = OllamaLLM(
     model="qwen3:14b",
     base_url="http://127.0.0.1:11434",
     temperature=0.0,
-    num_ctx=2048,
-    callback_manager=CallbackManager([StreamingStdOutCallbackHandler()])
+    num_ctx=2048
 )
 
 # system_message = SystemMessage(content="""
@@ -46,13 +42,13 @@ def main():
     message+='Who have an apple?'
     print(message)
 
-    session = [system_message, HumanMessage(content=message)]
-    print(f"\n--- Message tokens: ({llm.get_num_tokens_from_messages(session)}) ---------------")
-    response = llm.invoke(session, stream=True)
-    session += [HumanMessage(content=response)]
-    print(f"\n--- Response tokens: ({llm.get_num_tokens_from_messages(session)}) ---------------")
-    session += [HumanMessage(content=f'Return only one word "True" if User {found_user} and User {last_user} have apples and "False" if not.')]
-    response = llm.invoke(session, stream=True)
+    # session = [system_message, HumanMessage(content=message)]
+    # print(f"\n--- Message tokens: ({llm.get_num_tokens_from_messages(session)}) ---------------")
+    # response = llm.invoke(session, stream=False)
+    # session += [HumanMessage(content=response)]
+    # print(f"\n--- Response tokens: ({llm.get_num_tokens_from_messages(session)}) ---------------")
+    # session += [HumanMessage(content=f'Return only one word "True" if User {found_user} and User {last_user} have apples and "False" if not.')]
+    # response = llm.invoke(session, stream=False)
 
 if __name__ == "__main__":
     main()

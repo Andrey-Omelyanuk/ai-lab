@@ -1,0 +1,47 @@
+- model: llm_test.tag
+  pk: 1
+  fields:
+    name: Area
+    desc: Фокус пространства, например челевок переходит из одной локации в другую,
+      или вызов функции где каждая функция это отдельная область видимости т.е. пространство.
+- model: llm_test.tag
+  pk: 2
+  fields:
+    name: Noise
+    desc: Уровень постороннего шума который не относиться к делу. Значение в процентах
+      т.е. от 0 до 100.
+- model: llm_test.tag
+  pk: 3
+  fields:
+    name: Branching
+    desc: Разветвление одной истории на несколько линий. Противоположно Merging.
+- model: llm_test.tag
+  pk: 4
+  fields:
+    name: Merging
+    desc: Объединение несколько линий повествования в одну. Противоположно Branching.
+- model: llm_test.tag
+  pk: 5
+  fields:
+    name: Lines
+    desc: Сколько линий повествования одновременно в одном глобальном контексте.
+- model: llm_test.tag
+  pk: 6
+  fields:
+    name: Chaining
+    desc: Цепочка действий через которую проходит объект.
+- model: llm_test.tag
+  pk: 7
+  fields:
+    name: Recursion
+    desc: Рекурсии в истории.
+- model: llm_test.tag
+  pk: 8
+  fields:
+    name: Cicling
+    desc: Хождение по кругу. В отличии от рекурсии тут мы обязаны возвращаться в "Начало".
+- model: llm_test.tag
+  pk: 9
+  fields:
+    name: If/else
+    desc: Условия в истории.
