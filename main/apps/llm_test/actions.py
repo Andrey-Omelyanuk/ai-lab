@@ -1,5 +1,5 @@
 from langchain_ollama import OllamaLLM
-from langchain.schema import HumanMessage
+from langchain.schema import HumanMessage, SystemMessage
 from .models import Run, RunAttempt, RunAttemptLog, RunStatus
 
 
@@ -16,19 +16,33 @@ def run_llm_test(run_id: int):
             base_url=run.provider.url,
             model=str(run.llm_version)
         )
+        
+        messages = [
+            # SystemMessage(content='Add "/// final answer ///" before the final answer.'),
+        ]
+        for rule in run.rules.all():
+            messages.append(HumanMessage(content=rule.prompt))
+        messages.append(HumanMessage(content=run.test_version.prompt))
 
-        messages = []
-        # First step
-        # messages.append(HumanMessage(content=run.test_version.prompt))
-        # response = llm.invoke(messages)
-        # RunLog.objects.create(run=run, response=response)
-        # # Second step
-        # messages.append(HumanMessage(content=run.test_version.check_prompt))
-        # response = llm.invoke(messages)
-        # RunLog.objects.create(run=run, response=response)
-        # Check result
-        # run.status = RunStatus.COMPLETED if response.endswith("True") else RunStatus.FAILED
-        # run.save()
+        for _ in range(run.count):
+            attempt = RunAttempt.objects.create(run=run)
+            # First step: run the test
+            response = llm.invoke(messages)
+            RunAttemptLog.objects.create(attempt=attempt, response=response)
+            # Second step: check the answer
+            # get the last 3 lines of the response as a final answer
+            final_answer = "\n".join(response.split("\n")[-3:]).strip()
+            second_step_messages = [
+                HumanMessage(content=final_answer),
+                HumanMessage(content=run.test_version.check_prompt),
+            ]
+            response = llm.invoke(second_step_messages)
+            RunAttemptLog.objects.create(attempt=attempt, response=response)
+            attempt.status = RunStatus.COMPLETED if response.endswith("True") else RunStatus.FAILED
+            attempt.save()
+            run.status = attempt.status  # last attempt status is the run status
+        # save the run status
+        run.save()
 
     except Exception as e:
         run.status = RunStatus.ERROR
