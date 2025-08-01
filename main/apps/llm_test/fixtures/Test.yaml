@@ -4,3 +4,9 @@
     group: null
     name: First Test
     desc: Just to make sure everything works.
+- model: llm_test.test
+  pk: 2
+  fields:
+    group: null
+    name: Chain of Apple
+    desc: ''

@@ -5,3 +5,45 @@
     name: '1'
     prompt: "Say \"Abracadabra\".\r\nFinal answer should be after tag <answer>."
     check_prompt: Return only one word "True" if previous response contain "Abracadabra".
+- model: llm_test.testversion
+  pk: 2
+  fields:
+    test: 2
+    name: 77 && 33
+    prompt: "User 1 and 35 found apples. Each by one. \r\nUser 1 give the apple to
+      User 2. \r\nUser 2 give the apple to User 3. \r\nUser 3 give the apple to User
+      4. \r\nUser 4 give the apple to User 5. \r\nUser 5 give the apple to User 6.
+      \r\nUser 6 give the apple to User 7. \r\nUser 7 give the apple to User 8. \r\nUser
+      8 give the apple to User 9. \r\nUser 9 give the apple to User 10. \r\nUser 10
+      give the apple to User 11. \r\nUser 11 give the apple to User 12. \r\nUser 12
+      give the apple to User 13. \r\nUser 13 give the apple to User 14. \r\nUser 14
+      give the apple to User 15. \r\nUser 15 give the apple to User 16. \r\nUser 16
+      give the apple to User 17. \r\nUser 17 give the apple to User 18. \r\nUser 18
+      give the apple to User 19. \r\nUser 19 give the apple to User 20. \r\nUser 20
+      give the apple to User 21. \r\nUser 21 give the apple to User 22. \r\nUser 22
+      give the apple to User 23. \r\nUser 23 give the apple to User 24. \r\nUser 24
+      give the apple to User 25. \r\nUser 25 give the apple to User 26. \r\nUser 26
+      give the apple to User 27. \r\nUser 27 lost the apple but User 33 found it.
+      \r\nUser 35 give the apple to User 36. \r\nUser 36 give the apple to User 37.
+      \r\nUser 37 give the apple to User 38. \r\nUser 38 give the apple to User 39.
+      \r\nUser 39 give the apple to User 40. \r\nUser 40 give the apple to User 41.
+      \r\nUser 41 give the apple to User 42. \r\nUser 42 give the apple to User 43.
+      \r\nUser 43 give the apple to User 44. \r\nUser 44 give the apple to User 45.
+      \r\nUser 45 give the apple to User 46. \r\nUser 46 give the apple to User 47.
+      \r\nUser 47 give the apple to User 48. \r\nUser 48 give the apple to User 49.
+      \r\nUser 49 give the apple to User 50. \r\nUser 50 give the apple to User 51.
+      \r\nUser 51 give the apple to User 52. \r\nUser 52 give the apple to User 53.
+      \r\nUser 53 give the apple to User 54. \r\nUser 54 give the apple to User 55.
+      \r\nUser 55 give the apple to User 56. \r\nUser 56 give the apple to User 57.
+      \r\nUser 57 give the apple to User 58. \r\nUser 58 give the apple to User 59.
+      \r\nUser 59 give the apple to User 60. \r\nUser 60 give the apple to User 61.
+      \r\nUser 61 give the apple to User 62. \r\nUser 62 give the apple to User 63.
+      \r\nUser 63 give the apple to User 64. \r\nUser 64 give the apple to User 65.
+      \r\nUser 65 give the apple to User 66. \r\nUser 66 give the apple to User 67.
+      \r\nUser 67 give the apple to User 68. \r\nUser 68 give the apple to User 69.
+      \r\nUser 69 give the apple to User 70. \r\nUser 70 give the apple to User 71.
+      \r\nUser 71 give the apple to User 72. \r\nUser 72 give the apple to User 73.
+      \r\nUser 73 give the apple to User 74. \r\nUser 74 give the apple to User 75.
+      \r\nUser 75 give the apple to User 76. \r\nUser 76 give the apple to User 77.
+      \r\nTry to think and answer what users have an apple?"
+    check_prompt: Return only one word "True" if ONLY User 33 AND User 77 have apples.
