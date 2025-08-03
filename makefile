@@ -26,18 +26,6 @@ build:
 run:
 	docker compose up
 
-install:
-	python3 -m venv .venv
-
-activate:
-	. .venv/bin/activate
-
-update:
-	pip install -r requirements.txt
-
-test:
-	python test.py
-
 makemigrations:
 	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec main python manage.py makemigrations 
 migrate:
@@ -48,3 +36,6 @@ test_data_reset:
 	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec main sh utils/test_data_reset.sh
 create_superuser:
 	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec main python manage.py createsuperuser
+
+test:
+	docker compose -p $(PROJECT_NAME) -f $(DOCKER_COMPOSE_FILE) exec main python manage.py run_group 

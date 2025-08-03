@@ -158,8 +158,18 @@ class RunStatus(IntegerChoices):
     CANCELLED = 5, _('Cancelled')
 
 
+class RunGroup(Model):
+    """ Group of runs. """
+    name = CharField(max_length=64, null=False)
+    desc = TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Run(Model):
     """ LLM Test Run. """
+    group        = ForeignKey(RunGroup, on_delete=CASCADE, related_name='runs', null=True, blank=True)
     provider     = ForeignKey(Provider, on_delete=CASCADE, related_name='runs')
     llm_version  = ForeignKey(LLMVersion, on_delete=CASCADE, related_name='runs')
     test_version = ForeignKey(TestVersion, on_delete=CASCADE, related_name='runs')
